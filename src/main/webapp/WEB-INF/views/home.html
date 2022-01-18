@@ -12,14 +12,23 @@
 <body>
 
 <div class="container">
-    <a class="btn btn-success" href="/create">Create Staff</a>
-
+    <div>
+        <a class="btn btn-success" href="/create">Create Staff</a>
+    </div>
+    <div class="input-group" style="margin-top: 20px">
+        <form action="/findByName" method="get">
+            <input name="findName" type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                   aria-describedby="search-addon"/>
+            <input type="text" hidden name="action" value="findName">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </form>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>#</th>
-            <th>Name</th>
-            <th>Age</th>
+            <th><a href="/?option=nameStaff">Name</a></th>
+            <th><a href="/?option=ageStaff">Age</a></th>
             <th>Salary</th>
             <th>Branch</th>
             <th>Edit</th>
@@ -39,10 +48,15 @@
             <td><a th:href="@{/delete(id=${s.idStaff})}" class="btn btn-danger">Delete</a></td>
         </tr>
         <tr>
-            <td><a href="/sort">Sort By Age</a></td>
+<!--            <td><a href="/sort">Sort By Age</a></td>-->
         </tr>
         </tbody>
     </table>
+
+    <button th:if="${staffs.hasPrevious()}"><a th:href="@{/(page=${staffs.number} - 1)}"><<<<<<<<<<</a></button>
+    <b th:text="${staffs.number} + 1"></b> / <b th:text="${staffs.totalPages}"></b>
+    <button th:if="${staffs.hasNext()}"><a th:href="@{/(page=${staffs.number} + 1)}">>>>>>>>>>></a></button>
+
 </div>
 
 </body>

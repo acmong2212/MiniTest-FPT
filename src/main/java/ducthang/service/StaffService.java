@@ -3,6 +3,8 @@ package ducthang.service;
 import ducthang.model.Staff;
 import ducthang.repository.StaffRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -14,8 +16,13 @@ public class StaffService implements IStaffService{
     StaffRepo staffRepo;
 
     @Override
-    public List<Staff> findAllStaff() {
-        return (List<Staff>) staffRepo.findAll();
+    public Page<Staff> findAllStaff(Pageable pageable) {
+        return staffRepo.findAll(pageable);
+    }
+
+    @Override
+    public List<Staff> findAllByName(String name) {
+        return staffRepo.findAllByName(name);
     }
 
     @Override
@@ -33,10 +40,10 @@ public class StaffService implements IStaffService{
         return staffRepo.findById(id).get();
     }
 
-    @Override
-    public List<Staff> sort() {
-        List<Staff> staffList = findAllStaff();
-        staffList.sort(Comparator.comparing(Staff::getAgeStaff));
-        return staffList;
-    }
+//    @Override
+//    public List<Staff> sort() {
+//        List<Staff> staffList = findAllStaff();
+//        staffList.sort(Comparator.comparing(Staff::getAgeStaff));
+//        return staffList;
+//    }
 }

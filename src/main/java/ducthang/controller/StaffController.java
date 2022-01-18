@@ -5,8 +5,9 @@ import ducthang.model.Staff;
 import ducthang.service.IBranchService;
 import ducthang.service.IStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +23,10 @@ public class StaffController {
     IBranchService branchService;
 
     @GetMapping("")
-    public ModelAndView showAll() {
+    public ModelAndView showAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "nameStaff") String option) {
         ModelAndView modelAndView = new ModelAndView("home");
-        modelAndView.addObject("staffs", staffService.findAllStaff());
+        modelAndView.addObject("staffs", staffService.findAllStaff(PageRequest.of(page, 2, Sort.by(option))));
+        modelAndView.addObject("option", option);
         return modelAndView;
     }
 
@@ -77,10 +79,17 @@ public class StaffController {
         return "redirect:/";
     }
 
-    @GetMapping("/sort")
-    public ModelAndView sort() {
+//    @GetMapping("/sort")
+//    public ModelAndView sort() {
+//        ModelAndView modelAndView = new ModelAndView("home");
+//        modelAndView.addObject("staffs", staffService.sort());
+//        return modelAndView;
+//    }
+
+    @GetMapping("/findByName")
+    public ModelAndView findByName(@RequestParam String findName) {
         ModelAndView modelAndView = new ModelAndView("home");
-        modelAndView.addObject("staffs", staffService.sort());
+        modelAndView.addObject("staffs", staffService.findAllByName(findName));
         return modelAndView;
     }
 }
