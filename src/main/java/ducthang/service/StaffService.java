@@ -21,6 +21,11 @@ public class StaffService implements IStaffService{
     }
 
     @Override
+    public List<Staff> findAllStaff() {
+        return (List<Staff>) staffRepo.findAll();
+    }
+
+    @Override
     public List<Staff> findAllByName(String name) {
         return staffRepo.findAllByName(name);
     }

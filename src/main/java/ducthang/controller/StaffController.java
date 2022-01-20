@@ -4,15 +4,20 @@ import ducthang.model.Branch;
 import ducthang.model.Staff;
 import ducthang.service.IBranchService;
 import ducthang.service.IStaffService;
+import ducthang.validate.Repeat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class StaffController {
@@ -22,10 +27,13 @@ public class StaffController {
     @Autowired
     IBranchService branchService;
 
+    @Autowired
+    Repeat repeat;
+
     @GetMapping("")
     public ModelAndView showAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "nameStaff") String option) {
         ModelAndView modelAndView = new ModelAndView("home");
-        modelAndView.addObject("staffs", staffService.findAllStaff(PageRequest.of(page, 2, Sort.by(option))));
+        modelAndView.addObject("staffs", staffService.findAllStaff(PageRequest.of(page, 4, Sort.by(option))));
         modelAndView.addObject("option", option);
         return modelAndView;
     }
@@ -40,13 +48,27 @@ public class StaffController {
     @GetMapping("/create")
     public ModelAndView showCreate() {
         ModelAndView modelAndView = new ModelAndView("createStaff");
-        modelAndView.addObject("staff", new Staff());
-        modelAndView.addObject("branch", branchService.findAllBranch());
         return modelAndView;
     }
 
+    @ModelAttribute("staff")
+    public Staff staff(){
+        return new Staff();
+    }
+
+    @ModelAttribute("branch")
+    public List<Branch> branch(){
+        return branchService.findAllBranch();
+    }
+
     @PostMapping("/create")
-    public String create(@ModelAttribute(value = "staff") Staff staff, @RequestParam long idBranch) {
+    public String create(@Valid @ModelAttribute(value = "staff") Staff staff, BindingResult bindingResult, @RequestParam long idBranch) {
+        repeat.validate(staff, bindingResult);
+
+        if (bindingResult.hasFieldErrors()){
+            return "createStaff";
+        }
+
         Branch branch = new Branch();
         branch.setIdBranch(idBranch);
         staff.setBranch(branch);
@@ -70,7 +92,13 @@ public class StaffController {
     }
 
     @PostMapping("/edit")
-    public String edit(@ModelAttribute(value = "staff") Staff staff, @RequestParam long idBranch) {
+    public String edit(@Valid @ModelAttribute(value = "staff") Staff staff, BindingResult bindingResult, @RequestParam long idBranch) {
+        repeat.validate(staff, bindingResult);
+
+        if (bindingResult.hasFieldErrors()){
+            return "editStaff";
+        }
+
         Branch branch = new Branch();
         branch.setIdBranch(idBranch);
         staff.setBranch(branch);

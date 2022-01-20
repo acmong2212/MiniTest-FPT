@@ -10,37 +10,105 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-
-<form method="post" th:object="${staff}">
-    <div class="container">
-        <h2>Striped Rows</h2>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Salary</th>
-                <th>Branch</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><input th:field="*{nameStaff}" placeholder="Enter a Name"/></td>
-                <td><input th:field="*{ageStaff}" placeholder="Enter a Age"/></td>
-                <td><input th:field="*{salary}" placeholder="Enter a Salary"/></td>
-                <td>
-                    <select name="idBranch">
-                        <option th:each="b : ${branch}" th:value="${b.idBranch}" th:text="${b.nameBranch}"></option>
-                    </select>
-                </td>
-            </tr>
-
-            <button class="btn btn-success" type="submit">create
-            </button>
-            <button><a href="/">Back to list</a></button>
-            </tbody>
-        </table>
+<div class="modal-header">
+    <h5 class="modal-title">Create Staff</h5>
+</div>
+<div class="modal-body">
+    <div class="py-1">
+        <form class="form" novalidate="" method="post" th:object="${staff}">
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input class="form-control" th:field="*{nameStaff}" placeholder="Enter a Name"/>
+                                <p style="color: red" th:if="${#fields.hasErrors('nameStaff')}" th:errors="*{nameStaff}"></p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Age</label>
+                                <input class="form-control" th:field="*{ageStaff}" placeholder="Enter a Age"/>
+                                <p style="color: red" th:if="${#fields.hasErrors('ageStaff')}" th:errors="*{ageStaff}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input class="form-control" th:field="*{email}" placeholder="user@example.com"/>
+                                <p style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Salary</label>
+                                <input class="form-control" th:field="*{salary}" placeholder="Enter a Salary"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Branch:</label>
+                                <select name="idBranch">
+                                    <option th:each="b : ${branch}" th:value="${b.idBranch}"
+                                            th:text="${b.nameBranch}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col d-flex justify-content-end">
+                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                    <button><a href="/">Back to list</a></button>
+                </div>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+
+<!--<form method="post" th:object="${staff}">-->
+<!--    <div class="container">-->
+<!--        <h2>Striped Rows</h2>-->
+<!--        <table class="table table-striped">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>Name</th>-->
+<!--                <th>Age</th>-->
+<!--                <th>Email</th>-->
+<!--                <th>Salary</th>-->
+<!--                <th>Branch</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr>-->
+<!--                <td><input th:field="*{nameStaff}" placeholder="Enter a Name"/></td>-->
+<!--                <td><input th:field="*{ageStaff}" placeholder="Enter a Age"/></td>-->
+<!--                <td><input th:field="*{email}" placeholder="Enter a Email"/></td>-->
+<!--                <td><input th:field="*{salary}" placeholder="Enter a Salary"/></td>-->
+<!--                <td>-->
+<!--                    <select name="idBranch">-->
+<!--                        <option th:each="b : ${branch}" th:value="${b.idBranch}" th:text="${b.nameBranch}"></option>-->
+<!--                    </select>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td style="color: red" th:if="${#fields.hasErrors('nameStaff')}" th:errors="*{nameStaff}"></td>-->
+<!--                <td style="color: red" th:if="${#fields.hasErrors('ageStaff')}" th:errors="*{ageStaff}"></td>-->
+<!--                <td style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>-->
+<!--            </tr>-->
+<!--            <button class="btn btn-success" type="submit">create</button>-->
+<!--            <button><a href="/">Back to list</a></button>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</form>-->
 </body>
 </html>

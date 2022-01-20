@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface IStaffService {
     public Page<Staff> findAllStaff(Pageable pageable);
+    public List<Staff> findAllStaff();
     public List<Staff> findAllByName(String name);
     public void save(Staff staff);
     public void delete(long id);

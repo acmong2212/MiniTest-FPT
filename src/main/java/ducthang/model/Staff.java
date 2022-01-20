@@ -1,14 +1,29 @@
 package ducthang.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class Staff {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long idStaff;
+
+    @Pattern(regexp = "^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ\" +\n" +
+            "\"ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ\" +\n" +
+            "\"ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$", message = "Ho va ten khong bao gom` so va ki tu dac biet")
     private String nameStaff;
+
+    @Min(value = 18, message = "Cong ty khong^ nhan tre vi thanh` nien^")
+    @Max(value = 60, message = "Chu den tuoi nghi huu di lam` nua~ chi chu")
     private int ageStaff;
+
+    @Email
+    private String email;
+
     private String salary;
 
     @ManyToOne
@@ -17,11 +32,20 @@ public class Staff {
     public Staff() {
     }
 
-    public Staff(String nameStaff, int ageStaff, String salary, Branch branch) {
+    public Staff(String nameStaff, int ageStaff, String email, String salary, Branch branch) {
         this.nameStaff = nameStaff;
         this.ageStaff = ageStaff;
+        this.email = email;
         this.salary = salary;
         this.branch = branch;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Long getIdStaff() {
